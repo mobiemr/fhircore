@@ -35,6 +35,7 @@ import org.smartregister.fhircore.engine.util.SharedPreferencesHelper
 import org.smartregister.fhircore.engine.util.extension.initializeWorkerContext
 import org.smartregister.fhircore.engine.util.extension.runPeriodicSync
 import timber.log.Timber
+import com.google.android.fhir.datacapture.DataCaptureConfig
 
 class QuestApplication : Application(), ConfigurableApplication {
 
@@ -60,7 +61,8 @@ class QuestApplication : Application(), ConfigurableApplication {
       mapOf(
         ResourceType.Patient to mapOf(),
         ResourceType.Questionnaire to mapOf(),
-        ResourceType.CarePlan to mapOf()
+        ResourceType.CarePlan to mapOf(),
+        ResourceType.Binary to mapOf()
       )
 
   private fun constructFhirEngine(): FhirEngine {
@@ -98,6 +100,8 @@ class QuestApplication : Application(), ConfigurableApplication {
     }
 
     schedulePeriodicSync()
+
+    DataCaptureConfig.attachmentResolver = ReferenceAttachmentResolver(this)
   }
 
   companion object {
